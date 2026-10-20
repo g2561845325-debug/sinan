@@ -143,12 +143,12 @@
      are reserved for the few cases (lock-in product brand
      identity, code comments) where readability beats
      perceptual uniformity. Visual values are 1:1. */
-  --background: oklch(0.985 0.004 95);
-  --foreground: oklch(0.21 0.02 264);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.18 0.008 264);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 264);
+  --card-foreground: oklch(0.18 0.008 264);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 264);
+  --popover-foreground: oklch(0.18 0.008 264);
   --primary: oklch(0.58 0.12 158);
   --primary-foreground: oklch(1 0 0);
   --primary-hover: oklch(0.52 0.12 158);
@@ -166,15 +166,15 @@
   --signal-foreground: oklch(1 0 0);
   --secondary: oklch(0.998 0 0);
   --secondary-foreground: oklch(0.39 0.08 158);    /* emerald-800 */
-  --muted: oklch(0.965 0.006 95);
-  --muted-hover: oklch(0.94 0.008 95);
-  --muted-foreground: oklch(0.55 0.012 264);     /* gray-500 with the faintest green undertone */
-  --accent: oklch(0.98 0.01 154);
+  --muted: oklch(0.97 0 0);
+  --muted-hover: oklch(0.94 0 0);
+  --muted-foreground: oklch(0.50 0.008 264);
+  --accent: oklch(0.975 0.006 154);
   --accent-foreground: oklch(0.39 0.08 158);
   --destructive: oklch(0.42 0.12 56);
   --destructive-bright: oklch(0.55 0.22 25);      /* red-600 */
-  --border: oklch(0.88 0.008 95);
-  --input: oklch(0.84 0.008 95);
+  --border: oklch(0.91 0 0);
+  --input: oklch(0.88 0 0);
   --ring: oklch(0.58 0.12 158);
 
   /* Twitter-style palette used by components/review/* for the
@@ -203,7 +203,7 @@
   --chart-3: oklch(0.78 0.13 184);
   --chart-4: oklch(0.62 0.16 56);
   --chart-5: oklch(0.37 0.04 264);
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --sidebar: oklch(0.985 0.014 156);
   --sidebar-foreground: oklch(0.18 0.025 220);
   --sidebar-primary: oklch(0.34 0.075 205);
@@ -423,20 +423,20 @@
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
-    border-bottom: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
-    background: color-mix(in oklch, var(--background) 88%, transparent);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklch, var(--background) 96%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .web-nav-inner {
     display: flex;
     width: 100%;
     max-width: 1400px;
-    min-height: 5.25rem;
+    min-height: 4.5rem;
     margin: 0 auto;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     padding: 0 1rem;
   }
 
@@ -457,7 +457,7 @@
     height: 1.75rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--primary-surface-border);
+    border: 1px solid var(--border);
     border-radius: 999px;
     color: var(--primary-deep);
   }
@@ -466,13 +466,13 @@
     display: inline-flex;
     min-width: 15rem;
     max-width: 26rem;
-    margin-left: 5.25rem;
+    margin-left: 3rem;
     flex: 1;
     align-items: center;
     gap: 0.55rem;
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    background: color-mix(in oklch, var(--card) 94%, transparent);
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    background: var(--muted);
     color: var(--muted-foreground);
     padding: 0.58rem 0.75rem;
     font-size: 0.8125rem;
@@ -480,8 +480,8 @@
   }
 
   .web-nav-search:hover {
-    border-color: var(--primary-surface-border);
-    background: var(--card);
+    border-color: var(--border);
+    background: var(--muted-hover);
   }
 
   .web-nav-search kbd {
@@ -496,14 +496,14 @@
   .web-nav-links {
     display: flex;
     align-items: stretch;
-    gap: 3.875rem;
-    margin-left: 2rem;
+    gap: 2.5rem;
+    margin-left: 1.5rem;
     white-space: nowrap;
   }
 
   .web-nav-links a {
     display: inline-flex;
-    min-height: 4rem;
+    min-height: 3.5rem;
     align-items: center;
     border-bottom: 2px solid transparent;
     color: var(--muted-foreground);
@@ -526,7 +526,7 @@
 
   .web-surface {
     border: 1px solid var(--border);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
   }
 
   .web-surface-base {
@@ -596,14 +596,14 @@
   .solid-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 8px;
     box-shadow: none;
   }
 
   .solid-card-subtle {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 8px;
     box-shadow: none;
   }
 
@@ -676,6 +676,10 @@
     min-width: 0;
     max-width: none;
     margin-left: 0;
+    flex: 0 0 auto;
+    border-color: transparent;
+    background: transparent;
+    padding: 0.5rem;
   }
 
   .web-nav-search span,

@@ -14,12 +14,12 @@ export function HomeCompanyFeed() {
   }
 
   if (isPending) {
-    return <div className="h-40 animate-pulse rounded-3xl bg-muted" aria-label="正在加载公司" />
+    return <div className="h-40 animate-pulse bg-muted" aria-label="正在加载公司" />
   }
 
   if (error && !data) {
     return (
-      <div role="status" className="flex flex-wrap items-center gap-3 rounded-2xl border p-5">
+      <div role="status" className="flex flex-wrap items-center gap-3 border-y border-border py-5">
         <p className="text-sm text-muted-foreground">公司数据暂时不可用，请稍后再试</p>
         <WebButton type="button" variant="secondary" size="sm" onClick={retry}>重试</WebButton>
       </div>
@@ -27,11 +27,11 @@ export function HomeCompanyFeed() {
   }
 
   if (companies.length === 0) {
-    return <p className="rounded-2xl border p-5 text-sm text-muted-foreground">首批公司正在审核入库，欢迎稍后再来。</p>
+    return <p className="border-y border-border py-5 text-sm text-muted-foreground">首批公司正在审核入库，欢迎稍后再来。</p>
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="border-t border-border">
       {companies.map((company) => <CompanyCard key={company.id} company={company} />)}
     </div>
   )

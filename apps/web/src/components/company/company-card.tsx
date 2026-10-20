@@ -1,74 +1,52 @@
 import Link from "next/link"
-import { ArrowRight, MapPin } from "lucide-react"
+import { ArrowUpRight, Star } from "lucide-react"
 
-import { MetricPill } from "@/components/ui/metric-pill"
-import { ScoreChip } from "@/components/ui/score-chip"
-import { WebButton } from "@/components/ui/web-button"
-import { WebSurface } from "@/components/ui/web-surface"
-import { TagPill } from "@/components/ui/tag-pill"
 import type { CompanyListItem } from "@/lib/api/types"
 import type { Company } from "@/lib/types"
 
 type CompanyCardCompany = Company | CompanyListItem
 
 export function CompanyCard({ company }: { company: CompanyCardCompany }) {
-  const displayName = (company as CompanyListItem).shortName ?? (company as Company).name ?? ""
-  const salaryRange = (company as CompanyListItem).salaryRange ?? (company as Company).salaryRange
+  const displayName = (company as CompanyListItem).shortName ?? company.name
+  const reviewCount = company.reviewCount ?? 0
+  const score = reviewCount > 0 && Number.isFinite(company.directionScore)
+    ? Math.min(5, Math.max(0, (company.directionScore ?? 0) / 2))
+    : null
 
   return (
-    <WebSurface tone="base" className="p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h3 className="truncate text-lg font-semibold text-foreground">{displayName}</h3>
-          <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span>{company.industry}</span>
-            <span className="inline-flex items-center gap-1">
-              <MapPin className="size-3.5" />
-              {company.city}
-            </span>
-          </p>
+    <Link
+      href={`/company/${company.id}`}
+      className="group flex min-w-0 items-start gap-3 border-b border-border px-1 py-5 transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring sm:gap-4 sm:px-3"
+      aria-label={`查看${displayName}，${score === null ? "暂无评分" : `方向评分 ${score.toFixed(1)} 分（满分 5 分）`}，${reviewCount} 条评价`}
+    >
+      <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-muted text-base font-semibold text-foreground sm:size-12" aria-hidden="true">
+        {displayName.slice(0, 1)}
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        <div className="flex min-w-0 items-start justify-between gap-3">
+          <h3 className="min-w-0 truncate text-base font-semibold text-foreground sm:text-lg">{displayName}</h3>
+          <ArrowUpRight className="mt-1 size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground sm:hidden" aria-hidden="true" />
         </div>
-        <ScoreChip score={company.directionScore ?? 0} compact />
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm text-muted-foreground">
+          <span>{company.industry}</span>
+          <span aria-hidden="true">·</span>
+          <span>{company.city}</span>
+        </span>
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+          {score === null ? (
+            <span className="text-muted-foreground">暂无评分</span>
+          ) : (
+            <span className="inline-flex items-center gap-1 font-semibold text-foreground" aria-label={`方向评分 ${score.toFixed(1)} 分，满分 5 分`}>
+              <Star className="size-4 fill-amber-500 text-amber-500" aria-hidden="true" />
+              <span className="tabular-nums">{score.toFixed(1)}</span>
+              <span className="font-normal text-muted-foreground">/ 5</span>
+            </span>
+          )}
+          <span className="text-border" aria-hidden="true">·</span>
+          <span className="text-muted-foreground">{reviewCount.toLocaleString()} 条评价</span>
+        </span>
       </div>
-
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        <MetricPill label="推荐入职率" score={`${company.recommendationRate}%`} />
-        {salaryRange ? (
-          <div className="rounded-2xl bg-muted px-3 py-2">
-            <p className="text-xs text-muted-foreground">薪资区间</p>
-            <p className="text-sm font-medium text-foreground">{salaryRange}</p>
-          </div>
-        ) : (
-          <div className="rounded-2xl bg-muted px-3 py-2">
-            <p className="text-xs text-muted-foreground">评价数</p>
-            <p className="text-sm font-medium text-foreground">{(company.reviewCount ?? 0).toLocaleString()} 条评价</p>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-3 flex flex-wrap gap-2">
-        {(company.riskTags ?? []).slice(0, 3).map((tag) => (
-          <TagPill key={tag} tone={tag.includes("压力") || tag.includes("波动") ? "risk" : "neutral"}>
-            #{tag}
-          </TagPill>
-        ))}
-      </div>
-
-      {"cbti" in company && company.cbti ? (
-        <p className="mt-2 text-xs text-muted-foreground">公司 MBTI：{company.cbti.title}</p>
-      ) : "vibeTag" in company && company.vibeTag ? (
-        <p className="mt-2 text-xs text-muted-foreground">
-          公司体感：{company.vibeTag.name}
-        </p>
-      ) : null}
-      <div className="mt-3">
-        <WebButton asChild variant="primary" size="sm">
-          <Link href={`/company/${company.id}`} className="inline-flex items-center gap-1">
-            看这家公司
-            <ArrowRight className="size-4" />
-          </Link>
-        </WebButton>
-      </div>
-    </WebSurface>
+      <ArrowUpRight className="mt-1 hidden size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground sm:block" aria-hidden="true" />
+    </Link>
   )
 }

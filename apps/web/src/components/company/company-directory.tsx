@@ -1,14 +1,13 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Building2, SlidersHorizontal } from "lucide-react"
+import { Building2 } from "lucide-react"
 
 import { CompanyCard } from "@/components/company/company-card"
-import { SolidButton } from "@/components/ui/solid-button"
 import { SolidSearchInput } from "@/components/ui/solid-search-input"
 import { useCompanySearch } from "@/lib/queries/company-search"
 
-type SortMode = "reviews" | "score" | "recommendation"
+type SortMode = "reviews" | "score"
 
 export function CompanyDirectory() {
   const [query, setQuery] = useState("")
@@ -29,13 +28,12 @@ export function CompanyDirectory() {
       })
       .sort((a, b) => {
         if (sort === "score") return (b.directionScore ?? 0) - (a.directionScore ?? 0)
-        if (sort === "recommendation") return (b.recommendationRate ?? 0) - (a.recommendationRate ?? 0)
         return (b.reviewCount ?? 0) - (a.reviewCount ?? 0)
       })
   }, [city, companies, query, sort])
 
   if (loading) {
-    return <div className="h-48 animate-pulse rounded-3xl bg-muted" aria-label="正在加载公司" />
+    return <div className="h-48 animate-pulse bg-muted" aria-label="正在加载公司" />
   }
 
   if (error && !companies.length) {
@@ -43,42 +41,36 @@ export function CompanyDirectory() {
   }
 
   return (
-    <div className="space-y-5" data-testid="company-directory">
+    <div data-testid="company-directory">
       <SolidSearchInput value={query} onChange={setQuery} />
 
-      <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex gap-2 overflow-x-auto pb-1" aria-label="按城市筛选">
-          {cities.map((item) => (
-            <SolidButton
-              key={item}
-              type="button"
-              size="sm"
-              variant={city === item ? "dark" : "secondary"}
-              onClick={() => setCity(item)}
-              className="shrink-0"
-            >
-              {item}
-            </SolidButton>
-          ))}
-        </div>
-        <label className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
-          <SlidersHorizontal className="size-4" />
+      <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 border-b border-border pb-4 text-sm">
+        <label className="flex items-center gap-2 text-muted-foreground">
+          城市
+          <select
+            value={city}
+            onChange={(event) => setCity(event.target.value)}
+            className="h-10 max-w-36 bg-transparent px-1 font-medium text-foreground outline-none focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            {cities.map((item) => <option key={item} value={item}>{item}</option>)}
+          </select>
+        </label>
+        <label className="flex items-center gap-2 text-muted-foreground">
           排序
           <select
             value={sort}
             onChange={(event) => setSort(event.target.value as SortMode)}
-            className="h-10 border border-input bg-card px-3 text-sm text-foreground outline-none focus-visible:border-ring"
+            className="h-10 bg-transparent px-1 font-medium text-foreground outline-none focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring"
           >
             <option value="reviews">评价最多</option>
-            <option value="score">方向分最高</option>
-            <option value="recommendation">推荐率最高</option>
+            <option value="score">评分最高</option>
           </select>
         </label>
       </div>
 
-      <p className="text-sm text-muted-foreground">找到 {filteredCompanies.length} 家公司</p>
+      <p className="py-4 text-sm text-muted-foreground">找到 {filteredCompanies.length} 家公司</p>
       {filteredCompanies.length ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="border-t border-border">
           {filteredCompanies.map((company) => (
             <CompanyCard key={company.id} company={company} />
           ))}
