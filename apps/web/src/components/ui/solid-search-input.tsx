@@ -12,7 +12,7 @@ export function SolidSearchInput({
   onChange: (value: string) => void
 }) {
   return (
-    <label className="flex min-h-12 items-center gap-3 rounded-lg bg-muted px-4 focus-within:outline-2 focus-within:outline-ring">
+    <label className="flex min-h-12 min-w-0 items-center gap-3 rounded-lg border border-input bg-card px-4 focus-within:outline-2 focus-within:outline-ring">
       <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
       <span className="sr-only">搜索公司</span>
       <Input

@@ -4,6 +4,7 @@ import { WebButton } from "@/components/ui/web-button"
 import { useCompanySearch } from "@/lib/queries/company-search"
 
 import { CompanyCard } from "./company-card"
+import { CompanyListSkeleton } from "./company-list-skeleton"
 
 export function HomeCompanyFeed() {
   const { data, isPending, error, refetch } = useCompanySearch()
@@ -14,7 +15,7 @@ export function HomeCompanyFeed() {
   }
 
   if (isPending) {
-    return <div className="h-40 animate-pulse bg-muted" aria-label="正在加载公司" />
+    return <CompanyListSkeleton />
   }
 
   if (error && !data) {

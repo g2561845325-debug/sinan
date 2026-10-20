@@ -50,5 +50,5 @@ test("register keeps its privacy notice and Pulse keeps its example-data label",
   await expect(page.getByText(/你的身份信息不会向公司方公开/)).toBeVisible()
   await expect(page.getByText("成为指路人，分享真实体验")).toHaveCount(0)
   await page.goto("/pulse")
-  await expect(page.getByText("体验版 · 周报与公司趋势为示例数据", { exact: true })).toBeVisible()
+  await expect(page.getByRole("main").getByText("体验版 · 周报与公司趋势为示例数据", { exact: true })).toBeVisible()
 })
