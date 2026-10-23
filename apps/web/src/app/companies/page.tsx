@@ -6,7 +6,7 @@ import { SolidButton } from "@/components/ui/solid-button"
 
 export default function CompaniesPage() {
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-8 sm:py-12">
+    <section className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-8 sm:py-12">
       <header className="mb-8 flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">公司</h1>

@@ -53,41 +53,38 @@ export default async function CompanyPage({ params }: { params: Promise<{ id: st
 
   return (
     <section className="mx-auto w-full max-w-page px-4 pb-12 pt-4 sm:px-8 sm:pt-6">
-      <nav aria-label="面包屑" className="mb-5 flex items-center gap-1.5 text-sm text-muted-foreground">
+      <nav aria-label="面包屑" className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/search" className="inline-flex min-h-11 items-center hover:text-foreground">找公司</Link>
         <ChevronRight className="size-3.5" aria-hidden="true" />
         <span>{company.name}</span>
       </nav>
 
-      <header className="border-b border-border pb-0">
-        <div className="flex flex-col gap-6 min-[1200px]:flex-row min-[1200px]:justify-between">
-          <div className="flex min-w-0 items-start gap-4 sm:gap-6">
-            <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xl font-semibold text-foreground sm:size-16" aria-hidden="true">
+      <header className="border-b border-border">
+        <div className="flex flex-col gap-6 pb-6 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+          <div className="flex min-w-0 items-start gap-4 sm:gap-5">
+            <div className="grid size-14 shrink-0 place-items-center rounded-lg border border-input bg-muted text-xl font-semibold text-foreground sm:size-16" aria-hidden="true">
               {(company.shortName ?? company.name).slice(0, 1)}
             </div>
             <div className="min-w-0">
               <h1 className="text-2xl font-semibold leading-tight text-foreground sm:text-3xl">{company.name}</h1>
-              <p className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+              <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
                 <span>{company.industry}</span>
                 <span className="inline-flex items-center gap-1"><MapPin className="size-3.5" />{company.city}</span>
+                {company.size ? <span>{company.size}</span> : null}
                 {company.claimedStatus === "claimed" ? <span className="inline-flex items-center gap-1 text-primary-deep"><BadgeCheck className="size-3.5" />企业已认证</span> : null}
               </p>
-              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                <CompanyRating score={displayScore} prominent />
-                <span className="text-sm text-muted-foreground">{(company.reviewCount ?? 0).toLocaleString()} 条评价</span>
-              </div>
-              <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground"><ShieldCheck className="size-4 shrink-0" aria-hidden="true" />匿名评价 · 人工审核</p>
             </div>
           </div>
-          <div className="flex shrink-0 flex-col items-start gap-3 min-[1200px]:items-end">
-            <div className="flex items-center gap-3">
-              <WebButton variant="secondary" disabled title="关注功能暂未开放">关注公司</WebButton>
-              <WebButton asChild variant="primary"><Link href={`/submit/review?companyId=${encodeURIComponent(company.id)}`}><PenLine className="size-4" aria-hidden="true" />写评价</Link></WebButton>
+          <div className="flex flex-wrap items-end justify-between gap-5 border-t border-border pt-5 sm:justify-start lg:shrink-0 lg:justify-end lg:border-0 lg:pt-0">
+            <div>
+              <CompanyRating score={displayScore} prominent />
+              <Link href={`/company/${company.id}/reviews`} className="mt-1 block text-sm text-muted-foreground hover:text-foreground hover:underline">{reviewCount.toLocaleString()} 条公开评价</Link>
             </div>
-            <p className="text-xs text-muted-foreground">{(company.reviewCount ?? 0).toLocaleString()} 条公开评价 · {company.verifiedIdentityCount ?? 0} 位验证贡献者</p>
+            <WebButton asChild variant="primary"><Link href={`/submit/review?companyId=${encodeURIComponent(company.id)}`}><PenLine className="size-4" aria-hidden="true" />写评价</Link></WebButton>
           </div>
         </div>
-        <nav className="mt-6 flex gap-8 overflow-x-auto" aria-label="公司信息导航">
+        <p className="inline-flex items-center gap-1.5 pb-5 text-xs text-muted-foreground"><ShieldCheck className="size-4 shrink-0" aria-hidden="true" />匿名评价 · 人工审核 · {company.verifiedIdentityCount ?? 0} 位验证贡献者</p>
+        <nav className="flex gap-8 overflow-x-auto" aria-label="公司信息导航">
           {[
             ["概览", `/company/${company.id}`],
             ["评价", `/company/${company.id}/reviews`],
