@@ -14,7 +14,10 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // 127.0.0.1 is a default dev access host on this machine; without this
   // entry Next blocks /_next/static chunks and HMR for it.
-  allowedDevOrigins: ["127.0.0.1"],
+  allowedDevOrigins: [
+    "127.0.0.1",
+    ...(process.env.SINAN_PREVIEW_HOST ? [process.env.SINAN_PREVIEW_HOST] : []),
+  ],
   ...(isVercelBuild || isCloudflareBuild
     ? {}
     : {
